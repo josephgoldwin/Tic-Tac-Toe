@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Animal and Bird Images</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 5px solid blue;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 5px solid blue;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <table id="image-table"></table>
+
+    <script>
+        // Fetch JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Shuffle data array for random order
+                const shuffledData = data.sort(() => 0.5 - Math.random());
+                createImageTable(shuffledData);
+            })
+            .catch(error => console.error('Error loading JSON:', error));
+
+        // Function to create the image table
+        function createImageTable(data) {
+            const table = document.getElementById('image-table');
+            let row;
+
+            data.forEach((item, index) => {
+                // Create a new row every 3 images
+                if (index % 3 === 0) {
+                    row = table.insertRow();
+                }
+
+                // Create a cell with an image
+                const cell = row.insertCell();
+                const img = document.createElement('img');
+                img.src = item.imageUrl;
+                img.alt = item.type;  // Describe whether it's an animal or bird
+                cell.appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>
